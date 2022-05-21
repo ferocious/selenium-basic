@@ -1,6 +1,5 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -9,17 +8,16 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import javax.swing.*;
 import java.time.Duration;
 
 public class ProductQuantityTest extends TestBase {
 
-    String url = "http://146.59.32.4/index.php?id_product=6&rewrite=mug-the-best-is-yet-to-come&controller=product&id_lang=2";
     private int price;
     private WebElement inputQty;
 
     @BeforeMethod
     public void openPage() {
+        String url = "http://146.59.32.4/index.php?id_product=5&id_product_attribute=19&rewrite=today-is-a-good-day-framed-poster&controller=product&id_lang=2#/19-dimension-40x60cm";
         driver.get(url);
         price = Integer.parseInt(driver.findElement(By.cssSelector(".current-price>span")).getAttribute("content"));
         inputQty = driver.findElement(By.id("quantity_wanted"));
@@ -27,10 +25,6 @@ public class ProductQuantityTest extends TestBase {
 
     @Test
     public void userCanUseKeyUpAndDownOnQuantity() {
-        String cssButton = "#blockart-modal .cart-content.btn a";
-        int price = Integer.parseInt(driver.findElement(By.cssSelector(".current-price>span")).getAttribute(""));
-
-        WebElement inputQty = driver.findElement(By.id("quantity-wanted"));
         inputQty.sendKeys(Keys.ARROW_UP);
         inputQty.sendKeys(Keys.ARROW_UP);
         inputQty.sendKeys(Keys.ARROW_UP);
@@ -38,7 +32,7 @@ public class ProductQuantityTest extends TestBase {
         inputQty.sendKeys(Keys.ARROW_DOWN);
         inputQty.sendKeys(Keys.ENTER);
 
-
+        String cssButton = "#blockcart-modal .cart-content-btn a";
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(cssButton)));
 
@@ -53,10 +47,6 @@ public class ProductQuantityTest extends TestBase {
     @Test
     public void userCanPutQuantityFromKeyboard() {
         int number = 11;
-        price = Integer.parseInt(driver.findElement(By.cssSelector(".current-price>span")).getAttribute("content"));
-        inputQty = driver.findElement(By.id("quantity_wanted"));
-        WebElement inputQty = driver.findElement(By.id("quantity-wanted"));
-
         inputQty.clear();
 
         Actions action = new Actions(driver);
@@ -75,11 +65,12 @@ public class ProductQuantityTest extends TestBase {
     }
 
 
-    //Zadanie 2 - napisac test ktory sprawdza ze uzytkownik moze zmienic qty za pomoca dwoch przyciskow, asercje jak wyzej.
+    //Zadanie 2 - napisac test ktory sprawdza ze uzytkownik moze zmienic qty
+    // za pomoca dwoch przyciskow, asercje jak wyzej.
     @Test
     public void userCanChangeQtyUsingButtons() {
-        WebElement arrowUpButton = driver.findElement(By.id(".input-group-btn-vertical>.bootstrap-touchspin-up"));
-        WebElement arrowDownButton = driver.findElement(By.id(".input-group-btn-vertical>.bootstrap-touchspin-down"));
+        WebElement arrowUpButton = driver.findElement(By.cssSelector(".input-group-btn-vertical>.bootstrap-touchspin-up"));
+        WebElement arrowDownButton = driver.findElement(By.cssSelector(".input-group-btn-vertical>.bootstrap-touchspin-down"));
         WebElement addButton = driver.findElement(By.cssSelector("button.add-to-cart"));
         arrowUpButton.click();
         arrowUpButton.click();
@@ -96,6 +87,5 @@ public class ProductQuantityTest extends TestBase {
                 , "2");
         Assert.assertEquals(driver.findElement(By.cssSelector("#blockcart-modal span.subtotal")).getText()
                 , "$"+(2*price)+".00");
-
     }
 }
