@@ -12,6 +12,7 @@ import org.testng.annotations.BeforeMethod;
 public class TestBase {
     WebDriver driver;
     Logger logger = LoggerFactory.getLogger(this.getClass());
+    public final int IMPLICIT_WAIT_TIME_SECONDS = 5;
 
     @BeforeClass
     public void setupDriverManager() {
